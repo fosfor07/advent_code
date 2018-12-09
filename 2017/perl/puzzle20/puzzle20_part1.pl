@@ -1,0 +1,94 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use List::Util qw( min max );
+
+my $input_file = 'input.txt';
+
+local $/ = undef;
+open(PUZZLE_INPUT, "<./$input_file")
+    or die("Cannot open file!\n");
+
+my $input = <PUZZLE_INPUT>;
+close(PUZZLE_INPUT);
+local $/ = "\n";
+
+chomp $input;
+
+
+my @pos;
+my @vel;
+my @acc;
+my @dist;
+
+foreach my $line (split /\n/, $input)
+{
+    my ($p, $v, $a) = split / /, $line;
+    chomp $p;
+    chomp $v;
+    chomp $a;
+
+    my ($param, $val) = split /=/, $p;
+    $val =~ s/^<|>,$|>$//g;
+    my ($x, $y, $z) = split /,/, $val;
+    push @pos, $val;
+
+    ($param, $val) = split /=/, $v;
+    $val =~ s/^<|>,$|>$//g;
+    ($x, $y, $z) = split /,/, $val;
+    push @vel, $val;
+
+    ($param, $val) = split /=/, $a;
+    $val =~ s/^<|>,$|>$//g;
+    ($x, $y, $z) = split /,/, $val;
+    push @acc, $val;
+}
+
+
+my $cnt = 0;
+
+while(1)
+{
+    my ($xp, $yp, $zp);
+    my ($xv, $yv, $zv);
+    my ($xa, $ya, $za);
+
+    for(my $j=0; $j<=$#pos; $j++)
+    {
+        ($xp, $yp, $zp) = split /,/, $pos[$j];
+        ($xv, $yv, $zv) = split /,/, $vel[$j];
+        ($xa, $ya, $za) = split /,/, $acc[$j];
+
+        $xv += $xa;
+        $yv += $ya;
+        $zv += $za;
+        $vel[$j] = join(',',$xv,$yv,$zv);
+
+        $xp += $xv;
+        $yp += $yv;
+        $zp += $zv;
+        $pos[$j] = join(',',$xp,$yp,$zp);
+
+        $dist[$j] = abs($xp) + abs($yp) + abs($zp);
+    }
+    $cnt++;
+
+    if($cnt > 500)
+    {
+        my $min = min(@dist);
+        my $idx = 0;
+
+        foreach my $elem (@dist)
+        {
+            if($elem == $min)
+            {
+                print 'Min distance: ' . $min . "\n";
+                print 'Particle number: ' . $idx . "\n";
+            }
+            $idx++;
+        }
+        last;
+    }
+}
+
