@@ -6,45 +6,45 @@ import (
 )
 
 const playersNum = 400
-const marbles = 7186400
+const marblesNum = 7186400
 
 func main() {
 	var player int
 	var playersL []int
 	playersL = make([]int, playersNum)
-	for k := 0; k < playersNum; k++ {
+	for k := range playersL {
 		playersL[k] = 0
 	}
 
 	circle := list.New()
-	idx := circle.PushBack(0)
+	marble := circle.PushBack(0)
 
-	for x := 1; x <= marbles; x++ {
+	for x := 1; x <= marblesNum; x++ {
 		if circle.Len() < 2 {
-			idx = circle.PushBack(x)
+			marble = circle.PushBack(x)
 		} else if circle.Len() >= 2 {
 			if x%23 == 0 {
 				playersL[player] += x
 				for k := 0; k < 7; k++ {
-					idx = idx.Prev()
-					if idx == nil {
-						idx = circle.Back()
+					marble = marble.Prev()
+					if marble == nil {
+						marble = circle.Back()
 					}
 				}
-				playersL[player] += idx.Value.(int)
-				idxTmp := idx
-				idx = idx.Next()
-				circle.Remove(idxTmp)
+				playersL[player] += marble.Value.(int)
+				marbleTmp := marble
+				marble = marble.Next()
+				circle.Remove(marbleTmp)
 			} else {
-				idx = idx.Next()
-				if idx == nil {
-					idx = circle.Front()
+				marble = marble.Next()
+				if marble == nil {
+					marble = circle.Front()
 				}
-				idx.Next()
-				if idx == nil {
-					idx = circle.Front()
+				marble.Next()
+				if marble == nil {
+					marble = circle.Front()
 				}
-				idx = circle.InsertAfter(x, idx)
+				marble = circle.InsertAfter(x, marble)
 			}
 
 			// DEBUG
@@ -64,10 +64,9 @@ func main() {
 
 	maxScore := 0
 
-	for p, k := range playersL {
+	for _, k := range playersL {
 		if maxScore < k {
 			maxScore = k
-			fmt.Printf("Player: %d Score: %d\n", p+1, maxScore)
 		}
 	}
 	fmt.Printf("Max score: %d\n", maxScore)

@@ -5,20 +5,20 @@ import (
 )
 
 const playersNum = 400
-const marbles = 71864
+const marblesNum = 71864
 
 func main() {
 	var idx, player int
 	var playersL []int
 	playersL = make([]int, playersNum)
-	for k := 0; k < playersNum; k++ {
+	for k := range playersL {
 		playersL[k] = 0
 	}
 
 	var circle []int
 	circle = append(circle, 0)
 
-	for x := 1; x <= marbles; x++ {
+	for x := 1; x <= marblesNum; x++ {
 		if len(circle) < 2 {
 			circle = append(circle, x)
 			idx = x
@@ -62,10 +62,9 @@ func main() {
 
 	maxScore := 0
 
-	for p, k := range playersL {
+	for _, k := range playersL {
 		if maxScore < k {
 			maxScore = k
-			fmt.Printf("Player: %d Score: %d\n", p+1, maxScore)
 		}
 	}
 	fmt.Printf("Max score: %d\n", maxScore)
