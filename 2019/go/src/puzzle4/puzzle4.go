@@ -12,7 +12,7 @@ func main() {
 	var prev byte     // previous character in string
 	passCnt1 := 0     // number of valid passwords - part 1
 	passCnt2 := 0     // number of valid passwords - part 2
-	samePair := false // 2 adjacent digits are the same
+	pairFnd := false  // 2 adjacent digits are the same
 	noDecr := true    // no decrease
 	pairConf := false // pair has been confirmed
 	cntSame := 0      // count the same digits
@@ -20,7 +20,7 @@ func main() {
 	// part 1
 	for i := RangeStart; i <= RangeEnd; i++ {
 		// reset variables
-		samePair = false
+		pairFnd = false
 		noDecr = true
 
 		strCode := strconv.Itoa(i)
@@ -30,7 +30,7 @@ func main() {
 			prev = strCode[j-1]
 
 			if strCode[j] == prev {
-				samePair = true
+				pairFnd = true
 			}
 
 			if strCode[j] < prev {
@@ -39,7 +39,7 @@ func main() {
 			}
 		}
 
-		if samePair && noDecr {
+		if pairFnd && noDecr {
 			passCnt1++
 		}
 	}
@@ -47,7 +47,7 @@ func main() {
 	// part 2
 	for i := RangeStart; i <= RangeEnd; i++ {
 		// reset variables
-		samePair = false
+		pairFnd = false
 		noDecr = true
 		pairConf = false
 		cntSame = 0
@@ -61,9 +61,9 @@ func main() {
 			if strCode[j] == prev && !pairConf {
 				cntSame++
 				if cntSame == 1 {
-					samePair = true
+					pairFnd = true
 				} else {
-					samePair = false
+					pairFnd = false
 				}
 			} else {
 				if cntSame == 1 {
@@ -78,7 +78,7 @@ func main() {
 			}
 		}
 
-		if samePair && noDecr {
+		if pairFnd && noDecr {
 			passCnt2++
 		}
 	}
