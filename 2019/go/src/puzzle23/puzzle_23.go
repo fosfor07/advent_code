@@ -78,6 +78,12 @@ func getArguments(intCodes []int, idx int,
 
 const computersNum int = 50
 const natAddress int = 255
+const aliveCode int = 200
+
+// timeouts in milliseconds
+// natTimeout must be greater than computerTimeout
+const computerTimeout time.Duration = 5
+const natTimeout time.Duration = 10
 
 type msgType struct {
 	a int
@@ -109,6 +115,8 @@ func execute(intCodesInit []int, addr int, channels []chan msgType,
 
 	var sndMsg msgType
 	var rcvMsg msgType
+	var natMsg msgType
+	natMsg.a = aliveCode
 
 	// execute the program
 	for {
@@ -162,7 +170,7 @@ func execute(intCodesInit []int, addr int, channels []chan msgType,
 
 						msgVal = rcvMsg.x
 						expInY = true
-					case <-time.After(time.Millisecond * 10):
+					case <-time.After(time.Millisecond * computerTimeout):
 						if expInY {
 							fmt.Printf("ERROR: expInY is true for computer %d!!!\n", addr)
 						}
@@ -207,6 +215,8 @@ func execute(intCodesInit []int, addr int, channels []chan msgType,
 					}
 					natChan <- sndMsg
 				} else {
+					// inform NAT that network is not idle
+					natChan <- natMsg
 					channels[sndMsg.a] <- sndMsg
 				}
 			} else {
@@ -273,6 +283,8 @@ func execute(intCodesInit []int, addr int, channels []chan msgType,
 func natProcess(natChan chan msgType, respChan chan msgType) {
 	var lastRcvd msgType
 	var lastSent msgType
+	// check if NAT received any message
+	rcvdFlag := false
 
 	// NAT always sends messages to computer #0
 	lastRcvd.a = 0
@@ -280,13 +292,16 @@ func natProcess(natChan chan msgType, respChan chan msgType) {
 	for {
 		select {
 		case rcvMsg := <-natChan:
-			// update the last received message
-			lastRcvd.x = rcvMsg.x
-			lastRcvd.y = rcvMsg.y
-			//fmt.Printf("NAT updated last received msg! X: %d, Y: %d\n",
-			//	lastRcvd.x, lastRcvd.y)
-		case <-time.After(time.Millisecond * 20):
-			if lastSent.y == lastRcvd.y {
+			if rcvMsg.a != aliveCode {
+				// update the last received message
+				lastRcvd.x = rcvMsg.x
+				lastRcvd.y = rcvMsg.y
+				rcvdFlag = true
+				//fmt.Printf("NAT updated last received msg! X: %d, Y: %d\n",
+				//	lastRcvd.x, lastRcvd.y)
+			}
+		case <-time.After(time.Millisecond * natTimeout):
+			if (lastSent.y == lastRcvd.y) && rcvdFlag {
 				fmt.Printf("\nPART 2\nY = %d", lastSent.y)
 				return
 			}
