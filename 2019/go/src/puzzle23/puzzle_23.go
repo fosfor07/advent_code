@@ -115,8 +115,8 @@ func execute(intCodesInit []int, addr int, channels []chan msgType,
 
 	var sndMsg msgType
 	var rcvMsg msgType
-	var natMsg msgType
-	natMsg.a = aliveCode
+	var aliveMsg msgType
+	aliveMsg.a = aliveCode
 
 	// execute the program
 	for {
@@ -216,7 +216,7 @@ func execute(intCodesInit []int, addr int, channels []chan msgType,
 					natChan <- sndMsg
 				} else {
 					// inform NAT that network is not idle
-					natChan <- natMsg
+					natChan <- aliveMsg
 					channels[sndMsg.a] <- sndMsg
 				}
 			} else {
