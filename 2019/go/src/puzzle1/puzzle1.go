@@ -20,13 +20,23 @@ func main() {
 		panic(err)
 	}
 
-	fuel := 0
+	modFuel, fuel1, fuel2 := 0, 0, 0
 
 	for _, mass := range ints {
-		mass = mass / 3
-		mass = mass - 2
-		fuel += mass
+		modFuel = mass / 3
+		modFuel = modFuel - 2
+		fuel1 += modFuel
+		fuel2 += modFuel
+
+		for modFuel > 0 {
+			modFuel = modFuel / 3
+			modFuel = modFuel - 2
+			if modFuel > 0 {
+				fuel2 += modFuel
+			}
+		}
 	}
 
-	fmt.Printf("Sum of the fuel requirements: %d\n", fuel)
+	fmt.Printf("Part 1: %d\n", fuel1)
+	fmt.Printf("Part 2: %d\n", fuel2)
 }
