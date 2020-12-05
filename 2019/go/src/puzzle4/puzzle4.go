@@ -12,42 +12,15 @@ func main() {
 	var prev byte     // previous character in string
 	passCnt1 := 0     // number of valid passwords - part 1
 	passCnt2 := 0     // number of valid passwords - part 2
-	pairFnd := false  // 2 adjacent digits are the same
+	pairFnd1 := false // group of 2 or more the same digits
+	pairFnd2 := false // group of only 2 the same digits
 	noDecr := true    // no decrease
 	pairConf := false // pair has been confirmed
 	cntSame := 0      // count the same digits
 
-	// part 1
 	for i := RangeStart; i <= RangeEnd; i++ {
-		// reset variables
-		pairFnd = false
-		noDecr = true
-
-		strCode := strconv.Itoa(i)
-
-		// verify if password meets criteria
-		for j := 1; j < len(strCode); j++ {
-			prev = strCode[j-1]
-
-			if strCode[j] == prev {
-				pairFnd = true
-			}
-
-			if strCode[j] < prev {
-				noDecr = false
-				break
-			}
-		}
-
-		if pairFnd && noDecr {
-			passCnt1++
-		}
-	}
-
-	// part 2
-	for i := RangeStart; i <= RangeEnd; i++ {
-		// reset variables
-		pairFnd = false
+		pairFnd1 = false // part 1
+		pairFnd2 = false // part 2
 		noDecr = true
 		pairConf = false
 		cntSame = 0
@@ -59,11 +32,12 @@ func main() {
 			prev = strCode[j-1]
 
 			if strCode[j] == prev && !pairConf {
+				pairFnd1 = true
 				cntSame++
 				if cntSame == 1 {
-					pairFnd = true
+					pairFnd2 = true
 				} else {
-					pairFnd = false
+					pairFnd2 = false
 				}
 			} else {
 				if cntSame == 1 {
@@ -78,11 +52,15 @@ func main() {
 			}
 		}
 
-		if pairFnd && noDecr {
+		if pairFnd1 && noDecr {
+			passCnt1++
+		}
+
+		if pairFnd2 && noDecr {
 			passCnt2++
 		}
 	}
 
-	fmt.Printf("PART 1 - Passwords meeting criteria: %d\n", passCnt1)
-	fmt.Printf("PART 2 - Passwords meeting criteria: %d\n", passCnt2)
+	fmt.Printf("Part 1: %d\n", passCnt1)
+	fmt.Printf("Part 2: %d\n", passCnt2)
 }
