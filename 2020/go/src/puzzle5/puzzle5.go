@@ -29,26 +29,26 @@ func main() {
 	seats := make(map[int]seatType)
 	rL, rU := 0, 127  // rows range
 	cL, cU := 0, 7    // columns range
-	rD := rU - rL + 1 // number of rows in range
-	cD := cU - cL + 1 // number of columns in range
+	rN := rU - rL + 1 // number of rows in range
+	cN := cU - cL + 1 // number of columns in range
 
 	for _, line := range lines {
 		for _, ch := range line {
 			if ch == 'F' { // front
-				rU = rU - rD/2
-				rD = rU - rL + 1
+				rU = rU - rN/2
+				rN = rU - rL + 1
 			}
 			if ch == 'B' { // back
-				rL = rL + rD/2
-				rD = rU - rL + 1
+				rL = rL + rN/2
+				rN = rU - rL + 1
 			}
 			if ch == 'L' { // left
-				cU = cU - cD/2
-				cD = cU - cL + 1
+				cU = cU - cN/2
+				cN = cU - cL + 1
 			}
 			if ch == 'R' { //right
-				cL = cL + cD/2
-				cD = cU - cL + 1
+				cL = cL + cN/2
+				cN = cU - cL + 1
 			}
 		}
 
@@ -66,8 +66,8 @@ func main() {
 
 		rL, rU = 0, 127
 		cL, cU = 0, 7
-		rD = rU - rL + 1
-		cD = cU - cL + 1
+		rN = rU - rL + 1
+		cN = cU - cL + 1
 	}
 
 	// find missing seat
