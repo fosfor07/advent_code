@@ -50,10 +50,9 @@ func main() {
 		panic(err)
 	}
 
-	var orbMap map[string][]string
-	orbMap = make(map[string][]string)
+	orbMap := make(map[string][]string)
 
-	// PART 1
+	// Part 1
 	// total number of orbits
 	numOrbs := 0
 
@@ -66,16 +65,14 @@ func main() {
 		numOrbs += count(orbit, orbMap)
 	}
 
-	fmt.Printf("PART 1\n")
+	fmt.Printf("Part 1\n")
 	fmt.Printf("Total number of direct and indirect orbits: %d\n", numOrbs)
 
-	// PART 2
+	// Part 2
 	// path to YOU object
-	var youPath map[string]int
-	youPath = make(map[string]int)
+	youPath := make(map[string]int)
 	// path to SAN object
-	var sanPath map[string]int
-	sanPath = make(map[string]int)
+	sanPath := make(map[string]int)
 
 	findPath("YOU", orbMap, youPath)
 	findPath("SAN", orbMap, sanPath)
@@ -93,6 +90,6 @@ func main() {
 
 	minTransfers := (youPath["YOU"] - cmnJumps - 1) + (sanPath["SAN"] - cmnJumps - 1)
 
-	fmt.Printf("PART 2\n")
+	fmt.Printf("Part 2\n")
 	fmt.Printf("Minimum number of orbital transfers: %d\n", minTransfers)
 }
