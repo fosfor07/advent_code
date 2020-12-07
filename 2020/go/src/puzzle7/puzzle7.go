@@ -10,17 +10,17 @@ import (
 	"strings"
 )
 
-func bagColors(bag string, bags map[string]string, counted map[string]bool) int {
+func bagColors(bag string, bags map[string]string, seen map[string]bool) int {
 	numColors := 0
 
 	for iBag, contain := range bags {
 		matched, _ := regexp.MatchString(bag, contain)
 		if matched {
 			// Count each of bag colors only one time.
-			if _, ok := counted[iBag]; !ok {
+			if _, ok := seen[iBag]; !ok {
 				numColors++
-				counted[iBag] = true
-				numColors += bagColors(iBag, bags, counted)
+				seen[iBag] = true
+				numColors += bagColors(iBag, bags, seen)
 			}
 		}
 	}
@@ -80,8 +80,8 @@ func main() {
 		bags[words[0]+" "+words[1]] = fields[1]
 	}
 
-	counted := make(map[string]bool)
-	part1 = bagColors(myBag, bags, counted)
+	seen := make(map[string]bool)
+	part1 = bagColors(myBag, bags, seen)
 	part2 = neededBags(myBag, bags, 1)
 
 	fmt.Printf("Part 1: %d\n", part1)
