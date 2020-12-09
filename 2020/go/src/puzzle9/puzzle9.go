@@ -62,9 +62,7 @@ func main() {
 		}
 	}
 
-	minV := utils.Min(ints[firstIdx : lastIdx+1])
-	maxV := utils.Max(ints[firstIdx : lastIdx+1])
-	part2 = minV + maxV
+	part2 = utils.Min(ints[firstIdx:lastIdx+1]) + utils.Max(ints[firstIdx:lastIdx+1])
 
 	fmt.Printf("Part 1: %d\n", part1)
 	fmt.Printf("Part 2: %d\n", part2)
