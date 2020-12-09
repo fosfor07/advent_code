@@ -17,8 +17,8 @@ func SumDigits(num int) int {
 	return num%10 + SumDigits(num/10)
 }
 
-// UniqueInts returns a unique subset of the provided int slice.
-func UniqueInts(input []int) []int {
+// UniqueIntsSlice returns a unique subset of the provided int slice.
+func UniqueIntsSlice(input []int) []int {
 	u := make([]int, 0, len(input))
 	m := make(map[int]bool)
 
@@ -38,4 +38,28 @@ func ReverseSlice(a []int) []int {
 		a[left], a[right] = a[right], a[left]
 	}
 	return a
+}
+
+// Min returns the smallest number in slice.
+func Min(values []int) int {
+	min := values[0]
+	for _, v := range values {
+		if v < min {
+			min = v
+		}
+	}
+
+	return min
+}
+
+// Max returns the largest number in slice.
+func Max(values []int) int {
+	max := values[0]
+	for _, v := range values {
+		if v > max {
+			max = v
+		}
+	}
+
+	return max
 }
