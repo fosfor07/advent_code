@@ -63,3 +63,16 @@ func Max(values []int) int {
 
 	return max
 }
+
+// EqualIntSlices checks if 2 slices with int values are the same.
+func EqualIntSlices(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
+}
