@@ -9,9 +9,7 @@ import (
 )
 
 type slopeType struct {
-	x   int
-	y   int
-	res int
+	x, y int
 }
 
 func main() {
@@ -26,61 +24,52 @@ func main() {
 		panic(err)
 	}
 
-	xlen := len(lines[0])
-	ylen := len(lines)
-	xmax := xlen - 1
-	ymax := ylen - 1
+	xmax := len(lines[0]) - 1
+	ymax := len(lines) - 1
 
-	treeMap := make([][]rune, len(lines))
+	treeMap := make([][]rune, ymax+1)
 
 	for y, line := range lines {
-		treeMap[y] = make([]rune, xlen)
+		treeMap[y] = make([]rune, xmax+1)
 		for x, ch := range line {
 			treeMap[y][x] = ch
 		}
 	}
 
 	var slopes []slopeType
-	slope := slopeType{x: 1, y: 1, res: 0}
+	slope := slopeType{x: 1, y: 1}
 	slopes = append(slopes, slope)
-	slope = slopeType{x: 3, y: 1, res: 0}
+	slope = slopeType{x: 3, y: 1}
 	slopes = append(slopes, slope)
-	slope = slopeType{x: 5, y: 1, res: 0}
+	slope = slopeType{x: 5, y: 1}
 	slopes = append(slopes, slope)
-	slope = slopeType{x: 7, y: 1, res: 0}
+	slope = slopeType{x: 7, y: 1}
 	slopes = append(slopes, slope)
-	slope = slopeType{x: 1, y: 2, res: 0}
+	slope = slopeType{x: 1, y: 2}
 	slopes = append(slopes, slope)
 
-	xs, ys := 0, 0
-	trees := 0
 	part1, part2 := 0, 1
 
-	for k := 0; k < 5; k++ {
-		for ys <= ymax {
-			if treeMap[ys][xs] == '#' {
+	for _, slope := range slopes {
+		x, y := 0, 0
+		trees := 0
+
+		for y <= ymax {
+			if treeMap[y][x] == '#' {
 				trees++
 			}
-			xs += slopes[k].x
-			ys += slopes[k].y
+			x += slope.x
+			y += slope.y
 
-			if xs > xmax {
-				xs = xs - xmax - 1
+			if x > xmax {
+				x = x - xmax - 1
 			}
 		}
-		slopes[k].res = trees
 
-		if (slopes[k].x == 3) && (slopes[k].y == 1) {
+		if (slope.x == 3) && (slope.y == 1) {
 			part1 = trees
 		}
-
-		trees = 0
-		xs = 0
-		ys = 0
-	}
-
-	for _, slope := range slopes {
-		part2 *= slope.res
+		part2 *= trees
 	}
 
 	fmt.Printf("Part 1 = %d\n", part1)
