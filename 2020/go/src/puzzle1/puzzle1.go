@@ -20,20 +20,17 @@ func main() {
 		panic(err)
 	}
 
-	found1, found2 := false, false
 	part1, part2 := 0, 0
 
 	for _, expense1 := range ints {
 		for _, expense2 := range ints {
 			if expense1+expense2 == 2020 {
-				found1 = true
 				part1 = expense1 * expense2
 			}
 
-			if !found2 {
+			if part2 == 0 {
 				for _, expense3 := range ints {
 					if expense1+expense2+expense3 == 2020 {
-						found2 = true
 						part2 = expense1 * expense2 * expense3
 						break
 					}
@@ -41,7 +38,7 @@ func main() {
 			}
 		}
 
-		if found1 && found2 {
+		if (part1 != 0) && (part2 != 0) {
 			break
 		}
 	}

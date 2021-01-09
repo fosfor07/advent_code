@@ -22,8 +22,7 @@ func main() {
 		panic(err)
 	}
 
-	valid1 := 0
-	valid2 := 0
+	valid1, valid2 := 0, 0
 
 	for _, line := range lines {
 		r, _ := regexp.Compile("([0-9]+)-([0-9]+) (.+): (.+)")
@@ -31,13 +30,12 @@ func main() {
 
 		minV, _ := strconv.Atoi(matches[1])
 		maxV, _ := strconv.Atoi(matches[2])
-		letter := matches[3]
-		pass := matches[4]
+		letter := strings.Trim(matches[3], " ")
+		password := strings.Trim(matches[4], " ")
 
 		chNum := 0
-		fmin := false
-		fmax := false
-		for i, ch := range pass {
+		fmin, fmax := false, false
+		for i, ch := range password {
 			// part 1
 			if letter == string(ch) {
 				chNum++
