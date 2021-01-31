@@ -30,9 +30,11 @@ func main() {
 		preamble := ints[s-pLen : s]
 		for i := 0; i < pLen; i++ {
 			for j := 0; j < pLen; j++ {
-				if ints[s] == (preamble[i] + preamble[j]) {
-					fnd = true
-					break
+				if i != j {
+					if ints[s] == (preamble[i] + preamble[j]) {
+						fnd = true
+						break
+					}
 				}
 			}
 			if fnd {
@@ -45,8 +47,7 @@ func main() {
 		}
 	}
 
-	total := 0
-	firstIdx, lastIdx := 0, 0
+	total, firstIdx, lastIdx := 0, 0, 0
 	for i, num1 := range ints {
 		total = num1
 		for j := i + 1; j < len(ints); j++ {
@@ -54,6 +55,8 @@ func main() {
 			if total == part1 {
 				firstIdx = i
 				lastIdx = j
+				break
+			} else if total > part1 {
 				break
 			}
 		}
