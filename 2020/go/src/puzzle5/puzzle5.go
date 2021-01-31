@@ -9,8 +9,7 @@ import (
 )
 
 type seatType struct {
-	r int
-	c int
+	r, c int
 }
 
 func main() {
@@ -27,26 +26,24 @@ func main() {
 
 	part1, part2 := 0, 0
 	seats := make(map[int]seatType)
-	rL, rU := 0, 127  // rows range
-	cL, cU := 0, 7    // columns range
-	rN := rU - rL + 1 // number of rows in range
-	cN := cU - cL + 1 // number of columns in range
 
 	for _, line := range lines {
+		rL, rU := 0, 127  // rows range
+		cL, cU := 0, 7    // columns range
+		rN := rU - rL + 1 // number of rows in range
+		cN := cU - cL + 1 // number of columns in range
+
 		for _, ch := range line {
 			if ch == 'F' { // front
 				rU = rU - rN/2
 				rN = rU - rL + 1
-			}
-			if ch == 'B' { // back
+			} else if ch == 'B' { // back
 				rL = rL + rN/2
 				rN = rU - rL + 1
-			}
-			if ch == 'L' { // left
+			} else if ch == 'L' { // left
 				cU = cU - cN/2
 				cN = cU - cL + 1
-			}
-			if ch == 'R' { //right
+			} else if ch == 'R' { //right
 				cL = cL + cN/2
 				cN = cU - cL + 1
 			}
@@ -54,25 +51,16 @@ func main() {
 
 		// seat ID: multiply the row by 8, then add the column
 		sID := rL*8 + cL
-
-		var seat seatType
-		seat.r = rL
-		seat.c = cL
-		seats[sID] = seat
-
 		if sID > part1 {
 			part1 = sID
 		}
 
-		rL, rU = 0, 127
-		cL, cU = 0, 7
-		rN = rU - rL + 1
-		cN = cU - cL + 1
+		seats[sID] = seatType{r: rL, c: cL}
 	}
 
 	// find missing seat
-	for r := 0; r < 128; r++ {
-		for c := 0; c < 8; c++ {
+	for r := 0; r <= 127; r++ {
+		for c := 0; c <= 7; c++ {
 			sID := r*8 + c
 			if _, ok := seats[sID]; !ok {
 				// check seats with adjacent IDs
