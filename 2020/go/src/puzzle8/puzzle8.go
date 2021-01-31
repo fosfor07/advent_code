@@ -21,11 +21,10 @@ func main() {
 		panic(err)
 	}
 
-	acc1, acc2, idx := 0, 0, 0
+	acc1, acc2 := 0, 0
 	lines := make([]string, len(linesInit))
-	executed := make(map[int]bool)
-	checked := make(map[int]bool)
 	part2, end2 := false, false
+	lastIdx := -1
 
 	for {
 		numCodes := copy(lines, linesInit)
@@ -35,21 +34,21 @@ func main() {
 
 		// skip for part 1
 		if part2 {
-			for i := range lines {
-				if _, ok := checked[i]; !ok {
-					f := strings.Split(lines[i], " ")
-					if f[0] == "jmp" {
-						lines[i] = "nop " + f[1]
-						checked[i] = true
-						break
-					} else if f[0] == "nop" {
-						lines[i] = "jmp " + f[1]
-						checked[i] = true
-						break
-					}
+			for i := lastIdx + 1; i < len(lines); i++ {
+				lastIdx = i
+				f := strings.Split(lines[i], " ")
+				if f[0] == "jmp" {
+					lines[i] = "nop " + f[1]
+					break
+				} else if f[0] == "nop" {
+					lines[i] = "jmp " + f[1]
+					break
 				}
 			}
 		}
+
+		idx := 0
+		executed := make(map[int]bool)
 
 		for {
 			fields := strings.Split(lines[idx], " ")
@@ -62,8 +61,6 @@ func main() {
 					part2 = true
 				}
 				acc2 = 0
-				idx = 0
-				executed = make(map[int]bool)
 				break
 			}
 			executed[idx] = true
