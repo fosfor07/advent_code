@@ -47,9 +47,9 @@ func main() {
 		}
 	}
 
-	total, firstIdx, lastIdx := 0, 0, 0
+	firstIdx, lastIdx := 0, 0
 	for i, num1 := range ints {
-		total = num1
+		total := num1
 		for j := i + 1; j < len(ints); j++ {
 			total += ints[j]
 			if total == part1 {
