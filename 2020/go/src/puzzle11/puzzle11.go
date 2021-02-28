@@ -8,32 +8,32 @@ import (
 	"strings"
 )
 
+var dirs = [8][2]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
+
+func initMaps(seatsMap, updatedMap [][]rune, xmax, ymax int, lines []string) {
+	for y := 0; y <= ymax; y++ {
+		seatsMap[y] = make([]rune, xmax+1)
+		updatedMap[y] = make([]rune, xmax+1)
+		for x := 0; x <= xmax; x++ {
+			if x == 0 || x == xmax || y == 0 || y == ymax {
+				seatsMap[y][x] = '-'
+				updatedMap[y][x] = '-'
+			} else {
+				seatsMap[y][x] = rune(lines[y-1][x-1])
+				updatedMap[y][x] = rune(lines[y-1][x-1])
+			}
+		}
+	}
+}
+
 func cntAdjacentOccupied(x, y int, seatsMap [][]rune) int {
 	occupied := 0
 
-	if seatsMap[y-1][x-1] == '#' {
-		occupied++
-	}
-	if seatsMap[y-1][x] == '#' {
-		occupied++
-	}
-	if seatsMap[y-1][x+1] == '#' {
-		occupied++
-	}
-	if seatsMap[y][x-1] == '#' {
-		occupied++
-	}
-	if seatsMap[y][x+1] == '#' {
-		occupied++
-	}
-	if seatsMap[y+1][x-1] == '#' {
-		occupied++
-	}
-	if seatsMap[y+1][x] == '#' {
-		occupied++
-	}
-	if seatsMap[y+1][x+1] == '#' {
-		occupied++
+	for _, d := range dirs {
+		nextY, nextX := y+d[0], x+d[1]
+		if seatsMap[nextY][nextX] == '#' {
+			occupied++
+		}
 	}
 
 	return occupied
@@ -42,96 +42,19 @@ func cntAdjacentOccupied(x, y int, seatsMap [][]rune) int {
 func cntVisibleOccupied(x, y int, seatsMap [][]rune) int {
 	occupied := 0
 
-	xP, yP := x-1, y-1
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		xP--
-		yP--
-	}
+	for _, d := range dirs {
+		nextY, nextX := y, x
 
-	xP, yP = x, y-1
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
+		for {
+			nextY += d[0]
+			nextX += d[1]
+			if seatsMap[nextY][nextX] == '#' {
+				occupied++
+				break
+			} else if seatsMap[nextY][nextX] != '.' {
+				break
+			}
 		}
-		yP--
-	}
-
-	xP, yP = x+1, y-1
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		xP++
-		yP--
-	}
-
-	xP, yP = x-1, y
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		xP--
-	}
-
-	xP, yP = x+1, y
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		xP++
-	}
-
-	xP, yP = x-1, y+1
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		xP--
-		yP++
-	}
-
-	xP, yP = x, y+1
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		yP++
-	}
-
-	xP, yP = x+1, y+1
-	for {
-		if seatsMap[yP][xP] == '#' {
-			occupied++
-			break
-		} else if seatsMap[yP][xP] != '.' {
-			break
-		}
-		xP++
-		yP++
 	}
 
 	return occupied
@@ -156,19 +79,7 @@ func main() {
 	updatedMap := make([][]rune, ymax+1)
 
 	// part 1
-	for y := 0; y <= ymax; y++ {
-		seatsMap[y] = make([]rune, xmax+1)
-		updatedMap[y] = make([]rune, xmax+1)
-		for x := 0; x <= xmax; x++ {
-			if x == 0 || x == xmax || y == 0 || y == ymax {
-				seatsMap[y][x] = '-'
-				updatedMap[y][x] = '-'
-			} else {
-				seatsMap[y][x] = rune(lines[y-1][x-1])
-				updatedMap[y][x] = rune(lines[y-1][x-1])
-			}
-		}
-	}
+	initMaps(seatsMap, updatedMap, xmax, ymax, lines)
 
 	part1 := 0
 	for {
@@ -211,19 +122,7 @@ func main() {
 	}
 
 	// part 2
-	for y := 0; y <= ymax; y++ {
-		seatsMap[y] = make([]rune, xmax+1)
-		updatedMap[y] = make([]rune, xmax+1)
-		for x := 0; x <= xmax; x++ {
-			if x == 0 || x == xmax || y == 0 || y == ymax {
-				seatsMap[y][x] = '-'
-				updatedMap[y][x] = '-'
-			} else {
-				seatsMap[y][x] = rune(lines[y-1][x-1])
-				updatedMap[y][x] = rune(lines[y-1][x-1])
-			}
-		}
-	}
+	initMaps(seatsMap, updatedMap, xmax, ymax, lines)
 
 	part2 := 0
 	for {
