@@ -13,15 +13,14 @@ const part2Limit int = 30000000
 func main() {
 	part1, part2 := 0, 0
 	indices := make(map[int]int)
+	idx, n := 0, 0
 
 	nums := strings.Split(input, ",")
 	for i, nStr := range nums {
-		n, _ := strconv.Atoi(nStr)
+		n, _ = strconv.Atoi(nStr)
 		indices[n] = i
 	}
-
-	idx := len(nums)
-	n := 0
+	idx = indices[n]
 
 	for idx < part2Limit-1 {
 		if _, ok := indices[n]; ok {
