@@ -20,9 +20,9 @@ func main() {
 		indices[n] = i
 	}
 
-	idx := len(nums) - 1
+	idx := len(nums)
 	n := 0
-	idx++
+
 	for idx < part2Limit-1 {
 		if _, ok := indices[n]; ok {
 			prevIdx := indices[n]
@@ -36,9 +36,9 @@ func main() {
 		if idx < part1Limit-1 {
 			part1 = n
 		}
-		part2 = n
 		idx++
 	}
+	part2 = n
 
 	fmt.Printf("Part 1: %d\n", part1)
 	fmt.Printf("Part 2: %d\n", part2)
