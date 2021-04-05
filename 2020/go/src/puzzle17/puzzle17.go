@@ -8,21 +8,36 @@ import (
 	"strings"
 )
 
-type pType struct {
-	x int
-	y int
-	z int
-	w int
+type cubeType struct {
+	x, y, z, w int
 }
 
-func cntActiveNeighbours(p pType, grid [][][][]rune) int {
+func cntActiveNeighbours1(c cubeType, grid [][][]rune) int {
 	active := 0
 
-	for l := p.w - 1; l <= p.w+1; l++ {
-		for k := p.z - 1; k <= p.z+1; k++ {
-			for j := p.y - 1; j <= p.y+1; j++ {
-				for i := p.x - 1; i <= p.x+1; i++ {
-					if !(l == p.w && k == p.z && j == p.y && i == p.x) {
+	for k := c.z - 1; k <= c.z+1; k++ {
+		for j := c.y - 1; j <= c.y+1; j++ {
+			for i := c.x - 1; i <= c.x+1; i++ {
+				if !(k == c.z && j == c.y && i == c.x) {
+					if grid[k][j][i] == '#' {
+						active++
+					}
+				}
+			}
+		}
+	}
+
+	return active
+}
+
+func cntActiveNeighbours2(c cubeType, grid [][][][]rune) int {
+	active := 0
+
+	for l := c.w - 1; l <= c.w+1; l++ {
+		for k := c.z - 1; k <= c.z+1; k++ {
+			for j := c.y - 1; j <= c.y+1; j++ {
+				for i := c.x - 1; i <= c.x+1; i++ {
+					if !(l == c.w && k == c.z && j == c.y && i == c.x) {
 						if grid[l][k][j][i] == '#' {
 							active++
 						}
@@ -51,26 +66,44 @@ func main() {
 
 	part1, part2 := 0, 0
 
-	wlen := (numCycles * 3) + 1
+	wlen := (numCycles * 3) + 2
 	zlen := wlen
 	ylen := wlen + len(lines)
 	xlen := wlen + len(lines[0])
 
-	grid := make([][][][]rune, wlen)
-	uGrid := make([][][][]rune, wlen)
+	// part 1
+	grid1 := make([][][]rune, zlen)
+	uGrid1 := make([][][]rune, zlen)
+
+	for z := 0; z < zlen; z++ {
+		grid1[z] = make([][]rune, ylen)
+		uGrid1[z] = make([][]rune, ylen)
+		for y := 0; y < ylen; y++ {
+			grid1[z][y] = make([]rune, xlen)
+			uGrid1[z][y] = make([]rune, xlen)
+			for x := 0; x < xlen; x++ {
+				grid1[z][y][x] = '.'
+				uGrid1[z][y][x] = '.'
+			}
+		}
+	}
+
+	// part 2
+	grid2 := make([][][][]rune, wlen)
+	uGrid2 := make([][][][]rune, wlen)
 
 	for w := 0; w < wlen; w++ {
-		grid[w] = make([][][]rune, zlen)
-		uGrid[w] = make([][][]rune, zlen)
+		grid2[w] = make([][][]rune, zlen)
+		uGrid2[w] = make([][][]rune, zlen)
 		for z := 0; z < zlen; z++ {
-			grid[w][z] = make([][]rune, ylen)
-			uGrid[w][z] = make([][]rune, ylen)
+			grid2[w][z] = make([][]rune, ylen)
+			uGrid2[w][z] = make([][]rune, ylen)
 			for y := 0; y < ylen; y++ {
-				grid[w][z][y] = make([]rune, xlen)
-				uGrid[w][z][y] = make([]rune, xlen)
+				grid2[w][z][y] = make([]rune, xlen)
+				uGrid2[w][z][y] = make([]rune, xlen)
 				for x := 0; x < xlen; x++ {
-					grid[w][z][y][x] = '.'
-					uGrid[w][z][y][x] = '.'
+					grid2[w][z][y][x] = '.'
+					uGrid2[w][z][y][x] = '.'
 				}
 			}
 		}
@@ -80,8 +113,10 @@ func main() {
 	for _, line := range lines {
 		x := xlen / 2
 		for _, ch := range line {
-			grid[w][z][y][x] = ch
-			uGrid[w][z][y][x] = ch
+			grid1[z][y][x] = ch
+			uGrid1[z][y][x] = ch
+			grid2[w][z][y][x] = ch
+			uGrid2[w][z][y][x] = ch
 			x++
 		}
 		y++
@@ -93,17 +128,31 @@ func main() {
 			for z := 1; z < zlen-1; z++ {
 				for y := 1; y < ylen-1; y++ {
 					for x := 1; x < xlen-1; x++ {
-						var p pType
-						p.w, p.z, p.y, p.x = w, z, y, x
-						active := cntActiveNeighbours(p, grid)
+						if w == 1 {
+							c1 := cubeType{w: 1, z: z, y: y, x: x}
+							active1 := cntActiveNeighbours1(c1, grid1)
 
-						if grid[w][z][y][x] == '#' {
-							if active != 2 && active != 3 {
-								uGrid[w][z][y][x] = '.'
+							if grid1[z][y][x] == '#' {
+								if active1 != 2 && active1 != 3 {
+									uGrid1[z][y][x] = '.'
+								}
+							} else if grid1[z][y][x] == '.' {
+								if active1 == 3 {
+									uGrid1[z][y][x] = '#'
+								}
 							}
-						} else if grid[w][z][y][x] == '.' {
-							if active == 3 {
-								uGrid[w][z][y][x] = '#'
+						}
+
+						c2 := cubeType{w: w, z: z, y: y, x: x}
+						active2 := cntActiveNeighbours2(c2, grid2)
+
+						if grid2[w][z][y][x] == '#' {
+							if active2 != 2 && active2 != 3 {
+								uGrid2[w][z][y][x] = '.'
+							}
+						} else if grid2[w][z][y][x] == '.' {
+							if active2 == 3 {
+								uGrid2[w][z][y][x] = '#'
 							}
 						}
 					}
@@ -115,12 +164,22 @@ func main() {
 			for z := 0; z < zlen; z++ {
 				for y := 0; y < ylen; y++ {
 					for x := 0; x < xlen; x++ {
+						if w == 1 {
+							if cycle == numCycles-1 {
+								if uGrid1[z][y][x] == '#' {
+									part1++
+								}
+							} else {
+								grid1[z][y][x] = uGrid1[z][y][x]
+							}
+						}
+
 						if cycle == numCycles-1 {
-							if uGrid[w][z][y][x] == '#' {
+							if uGrid2[w][z][y][x] == '#' {
 								part2++
 							}
 						} else {
-							grid[w][z][y][x] = uGrid[w][z][y][x]
+							grid2[w][z][y][x] = uGrid2[w][z][y][x]
 						}
 					}
 				}
