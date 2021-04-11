@@ -34,15 +34,15 @@ func main() {
 			messages = append(messages, line)
 		} else {
 			fields := strings.Split(line, ":")
-			fields[0] = strings.Trim(fields[0], " ")
-			fields[1] = strings.Trim(fields[1], " ")
+			fields[0] = strings.TrimSpace(fields[0])
+			fields[1] = strings.TrimSpace(fields[1])
 
 			if fields[1][0] == '"' {
 				dRules[fields[0]] = append(dRules[fields[0]], string(fields[1][1]))
 			} else {
 				subRules := strings.Split(fields[1], "|")
 				for _, sr := range subRules {
-					sr = strings.Trim(sr, " ")
+					sr = strings.TrimSpace(sr)
 					rules[fields[0]] = append(rules[fields[0]], sr)
 				}
 			}
