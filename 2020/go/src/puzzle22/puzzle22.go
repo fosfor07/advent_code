@@ -134,11 +134,9 @@ func main() {
 
 	for len(deck1) > 0 && len(deck2) > 0 {
 		if checkHistory(hist1, deck1) {
-			deck2 = nil
 			break
 		}
 		if checkHistory(hist2, deck2) {
-			deck2 = nil
 			break
 		}
 
