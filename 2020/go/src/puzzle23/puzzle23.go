@@ -20,8 +20,7 @@ func createCupsList(cupList *listType) {
 	for _, ch := range labelsString {
 		labelInt, _ := strconv.Atoi(string(ch))
 
-		var c cupType
-		c.label = labelInt
+		c := cupType{label: labelInt, next: nil}
 		if cupList.head == nil {
 			cupList.head = &c
 		} else {
@@ -99,8 +98,7 @@ func main() {
 	createCupsList(&cupList2)
 
 	for i := highLabel1 + 1; i <= highLabel2; i++ {
-		var c cupType
-		c.label = i
+		c := cupType{label: i, next: nil}
 		cupList2.tail.next = &c
 		cupList2.tail = &c
 
