@@ -106,16 +106,12 @@ func main() {
 			flips = 1
 		}
 
-		var tile tileType
-		tile.x, tile.y, tile.z = x, y, z
-		tile.flips = flips
-		tile.color = 'w'
+		tile := tileType{x: x, y: y, z: z, flips: flips, color: 'w'}
 		tiles[key] = tile
 	}
 
 	for k, tile := range tiles {
-		var uTile tileType
-		uTile.x, uTile.y, uTile.z = tile.x, tile.y, tile.z
+		uTile := tileType{x: tile.x, y: tile.y, z: tile.z, flips: tile.flips, color: tile.color}
 
 		if tile.flips%2 == 1 {
 			part1++
@@ -131,8 +127,7 @@ func main() {
 		for k, tile := range tiles {
 			b, keys := cntAdjBlack(k, tiles)
 
-			var uTile tileType
-			uTile.x, uTile.y, uTile.z = tile.x, tile.y, tile.z
+			uTile := tileType{x: tile.x, y: tile.y, z: tile.z, flips: tile.flips, color: tile.color}
 
 			if tile.color == 'b' {
 				if b == 0 || b > 2 {
