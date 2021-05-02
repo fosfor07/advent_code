@@ -2,14 +2,15 @@ package main
 
 import "fmt"
 
+const cardKey int = 9789649
+const doorKey int = 3647239
+const subjectNumer int = 7
+
 func transform(value, subjectNumer int) int {
 	return (value * subjectNumer) % 20201227
 }
 
 func main() {
-	cardKey := 9789649
-	doorKey := 3647239
-	subjectNumer := 7
 	cardLS, doorLS := 0, 0
 
 	key := 1
