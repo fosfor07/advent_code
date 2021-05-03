@@ -47,6 +47,15 @@ func UniqueStringsSlice(input []string) []string {
 	return u
 }
 
+// ReverseString returns reversed string.
+func ReverseString(str string) string {
+	result := ""
+	for _, ch := range str {
+		result = string(ch) + result
+	}
+	return result
+}
+
 // ReverseSlice returns reversed slice of integers.
 func ReverseSlice(a []int) []int {
 	for left, right := 0, len(a)-1; left < right; left, right = left+1, right-1 {
