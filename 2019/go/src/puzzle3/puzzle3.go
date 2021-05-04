@@ -22,14 +22,11 @@ func main() {
 		panic(err)
 	}
 
-	minDist := 0
-	minSteps := 0
+	minDist, minSteps := 0, 0
 	wire1 := make(map[string]int)
 
 	for wireNum, line := range lines {
-		steps := 0
-		x := 0
-		y := 0
+		steps, x, y := 0, 0, 0
 
 		values, err := readers.ReadCsvWords(strings.NewReader(string(line)))
 		if err != nil {
