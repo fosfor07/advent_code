@@ -9,10 +9,8 @@ import (
 	"strings"
 )
 
-func getPositions(opcode int, intCodes []int, idx int) (int, int, int) {
-	pos1 := 0
-	pos2 := 0
-	pos3 := 0
+func getPositions(intCodes []int, opcode, idx int) (int, int, int) {
+	pos1, pos2, pos3 := 0, 0, 0
 
 	if opcode == 1 || opcode == 2 {
 		pos1 = intCodes[idx+1]
@@ -32,10 +30,8 @@ func getPositions(opcode int, intCodes []int, idx int) (int, int, int) {
 	return pos1, pos2, pos3
 }
 
-func getArguments(intCodes []int, idx int, pos1 int, pos2 int,
-	mode1 int, mode2 int) (int, int) {
-	arg1 := 0
-	arg2 := 0
+func getArguments(intCodes []int, idx, pos1, pos2, mode1, mode2 int) (int, int) {
+	arg1, arg2 := 0, 0
 
 	if mode1 == 0 {
 		arg1 = intCodes[pos1]
@@ -65,18 +61,10 @@ func main() {
 	}
 
 	intCodes := make([]int, len(intCodesInit))
-	idx := 0
-	opcode := 0
 	inputs := []int{1, 5}
 
-	for _, input := range inputs {
-		if input == 1 {
-			fmt.Printf("PART 1\n")
-		} else if input == 5 {
-			fmt.Printf("\nPART 2\n")
-		}
-
-		idx = 0
+	for part, input := range inputs {
+		idx := 0
 
 		// reset the computer's memory
 		numCodes := copy(intCodes, intCodesInit)
@@ -86,43 +74,51 @@ func main() {
 
 		// execute the program
 		for {
-			// determine opcode
 			strCode := strconv.Itoa(intCodes[idx])
 			if len(strCode) < 5 {
 				strCode = fmt.Sprintf("%05s", strCode)
 			}
 
-			opcode, _ = strconv.Atoi(string(strCode[3:]))
+			opcode, _ := strconv.Atoi(string(strCode[3:]))
 			mode1, _ := strconv.Atoi(string(strCode[2]))
 			mode2, _ := strconv.Atoi(string(strCode[1]))
 
 			if opcode == 1 {
-				pos1, pos2, pos3 := getPositions(opcode, intCodes, idx)
+				pos1, pos2, pos3 := getPositions(intCodes, opcode, idx)
 				arg1, arg2 := getArguments(intCodes, idx, pos1, pos2, mode1, mode2)
 
 				intCodes[pos3] = arg1 + arg2
 				idx += 4
 			} else if opcode == 2 {
-				pos1, pos2, pos3 := getPositions(opcode, intCodes, idx)
+				pos1, pos2, pos3 := getPositions(intCodes, opcode, idx)
 				arg1, arg2 := getArguments(intCodes, idx, pos1, pos2, mode1, mode2)
 
 				intCodes[pos3] = arg1 * arg2
 				idx += 4
 			} else if opcode == 3 {
-				pos1, _, _ := getPositions(opcode, intCodes, idx)
+				pos1, _, _ := getPositions(intCodes, opcode, idx)
 				intCodes[pos1] = input
-				fmt.Printf("Input: %d\n", intCodes[pos1])
 				idx += 2
 			} else if opcode == 4 {
-				pos1, _, _ := getPositions(opcode, intCodes, idx)
+				pos1, _, _ := getPositions(intCodes, opcode, idx)
+				output := -1
+
 				if mode1 == 0 {
-					fmt.Printf("Output: %d\n", intCodes[pos1])
+					output = intCodes[pos1]
 				} else if mode1 == 1 {
-					fmt.Printf("Output: %d\n", intCodes[idx+1])
+					output = intCodes[idx+1]
+				}
+
+				if output != 0 {
+					if part == 0 {
+						fmt.Printf("Part 1: %d\n", output)
+					} else if part == 1 {
+						fmt.Printf("Part 2: %d\n", output)
+					}
 				}
 				idx += 2
 			} else if opcode == 5 {
-				pos1, pos2, _ := getPositions(opcode, intCodes, idx)
+				pos1, pos2, _ := getPositions(intCodes, opcode, idx)
 				arg1, arg2 := getArguments(intCodes, idx, pos1, pos2, mode1, mode2)
 
 				if arg1 != 0 {
@@ -131,7 +127,7 @@ func main() {
 					idx += 3
 				}
 			} else if opcode == 6 {
-				pos1, pos2, _ := getPositions(opcode, intCodes, idx)
+				pos1, pos2, _ := getPositions(intCodes, opcode, idx)
 				arg1, arg2 := getArguments(intCodes, idx, pos1, pos2, mode1, mode2)
 
 				if arg1 == 0 {
@@ -140,7 +136,7 @@ func main() {
 					idx += 3
 				}
 			} else if opcode == 7 {
-				pos1, pos2, pos3 := getPositions(opcode, intCodes, idx)
+				pos1, pos2, pos3 := getPositions(intCodes, opcode, idx)
 				arg1, arg2 := getArguments(intCodes, idx, pos1, pos2, mode1, mode2)
 
 				if arg1 < arg2 {
@@ -150,7 +146,7 @@ func main() {
 				}
 				idx += 4
 			} else if opcode == 8 {
-				pos1, pos2, pos3 := getPositions(opcode, intCodes, idx)
+				pos1, pos2, pos3 := getPositions(intCodes, opcode, idx)
 				arg1, arg2 := getArguments(intCodes, idx, pos1, pos2, mode1, mode2)
 
 				if arg1 == arg2 {
