@@ -52,8 +52,7 @@ func main() {
 
 	orbMap := make(map[string][]string)
 
-	// Part 1
-	// total number of orbits
+	// Part 1 - total number of orbits
 	numOrbs := 0
 
 	for _, line := range lines {
@@ -65,8 +64,7 @@ func main() {
 		numOrbs += count(orbit, orbMap)
 	}
 
-	fmt.Printf("Part 1\n")
-	fmt.Printf("Total number of direct and indirect orbits: %d\n", numOrbs)
+	fmt.Printf("Part 1: %d\n", numOrbs)
 
 	// Part 2
 	// path to YOU object
@@ -90,6 +88,5 @@ func main() {
 
 	minTransfers := (youPath["YOU"] - cmnJumps - 1) + (sanPath["SAN"] - cmnJumps - 1)
 
-	fmt.Printf("Part 2\n")
-	fmt.Printf("Minimum number of orbital transfers: %d\n", minTransfers)
+	fmt.Printf("Part 2: %d\n", minTransfers)
 }
