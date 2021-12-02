@@ -20,17 +20,16 @@ func main() {
 		panic(err)
 	}
 
-	part1, part2, prevDepth := 0, 0, 0
+	part1, part2 := 0, 0
 
-	for _, depth := range depths {
-		if prevDepth < depth && prevDepth != 0 {
+	for i := range depths {
+		if i > 0 && depths[i-1] < depths[i] {
 			part1++
 		}
-		prevDepth = depth
 	}
 
-	for i := 0; i < len(depths)-3; i++ {
-		if depths[i]+depths[i+1]+depths[i+2] < depths[i+1]+depths[i+2]+depths[i+3] {
+	for j := 0; j < len(depths)-3; j++ {
+		if depths[j]+depths[j+1]+depths[j+2] < depths[j+1]+depths[j+2]+depths[j+3] {
 			part2++
 		}
 	}
