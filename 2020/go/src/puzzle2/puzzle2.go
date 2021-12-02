@@ -24,8 +24,9 @@ func main() {
 
 	valid1, valid2 := 0, 0
 
+	r := regexp.MustCompile("([0-9]+)-([0-9]+)(.+):(.+)")
+
 	for _, line := range lines {
-		r, _ := regexp.Compile("([0-9]+)-([0-9]+)(.+):(.+)")
 		matches := r.FindStringSubmatch(line)
 
 		minV, _ := strconv.Atoi(matches[1])

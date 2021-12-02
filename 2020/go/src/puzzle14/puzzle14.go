@@ -29,6 +29,8 @@ func main() {
 	mask := ""
 	numX, xMask := 0, 0.0
 
+	r := regexp.MustCompile("([0-9]+)")
+
 	for _, line := range lines {
 		fields := strings.Split(line, "=")
 		fields[0] = strings.Trim(fields[0], " ")
@@ -39,7 +41,6 @@ func main() {
 			numX = strings.Count(mask, "X")
 			xMask = math.Pow(2, float64(numX))
 		} else {
-			r, _ := regexp.Compile("([0-9]+)")
 			matches := r.FindStringSubmatch(fields[0])
 
 			// Part 1

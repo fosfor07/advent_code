@@ -66,6 +66,8 @@ func main() {
 
 	part1, part2 := 0, 0
 
+	r := regexp.MustCompile(`(^[0-9]+)(.*)$`)
+
 	for _, line := range lines {
 		var sTkns1, sTkns2 []string
 
@@ -83,7 +85,6 @@ func main() {
 			cIdx := strings.Index(tkns[i], ")")
 			for cIdx >= 0 {
 				if cIdx > 0 {
-					r := regexp.MustCompile(`(^[0-9]+)(.*)$`)
 					matches := r.FindStringSubmatch(tkns[i])
 					sTkns1 = append(sTkns1, matches[1])
 					tkns[i] = matches[2]

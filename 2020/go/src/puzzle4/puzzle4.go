@@ -27,6 +27,10 @@ func main() {
 	valid1, valid2 := 0, 0
 	tokN1, tokN2 := 0, 0
 
+	rHgt := regexp.MustCompile("(^[0-9]{2,3})([[:alpha:]]{2})$")
+	rHcl := regexp.MustCompile("^#[[:xdigit:]]{6}$")
+	rPid := regexp.MustCompile("^[0-9]{9}$")
+
 	for _, line := range lines {
 		if len(line) > 0 {
 			fields := strings.Split(line, " ")
@@ -64,8 +68,7 @@ func main() {
 					// hgt (Height) - a number followed by either cm or in:
 					// If cm, the number must be at least 150 and at most 193.
 					// If in, the number must be at least 59 and at most 76.
-					r, _ := regexp.Compile("(^[0-9]{2,3})([[:alpha:]]{2})$")
-					matches := r.FindStringSubmatch(tokens[1])
+					matches := rHgt.FindStringSubmatch(tokens[1])
 					if len(matches) == 3 {
 						hgtInt, _ := strconv.Atoi(matches[1])
 						if (matches[2] == "cm" && (hgtInt >= 150 && hgtInt <= 193)) ||
@@ -77,8 +80,7 @@ func main() {
 					tokN1++
 
 					// hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f
-					matched, _ := regexp.MatchString("^#[[:xdigit:]]{6}$", tokens[1])
-					if matched {
+					if rHcl.MatchString(tokens[1]) {
 						tokN2++
 					}
 				} else if tokens[0] == "ecl" && len(tokens) > 1 {
@@ -94,13 +96,12 @@ func main() {
 					tokN1++
 
 					// pid (Passport ID) - a nine-digit number, including leading zeroes
-					matched, _ := regexp.MatchString("^[0-9]{9}$", tokens[1])
-					if matched {
+					if rPid.MatchString(tokens[1]) {
 						tokN2++
 					}
-				} else if tokens[0] == "cid" && len(tokens) > 1 {
-					// cid (Country ID) - ignored, missing or not
-				}
+				} // else if tokens[0] == "cid" && len(tokens) > 1 {
+				// cid (Country ID) - ignored, missing or not
+				//}
 			}
 		} else {
 			if tokN1 == 7 {
