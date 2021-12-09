@@ -14,13 +14,13 @@ type pointType struct {
 	r, c, h int
 }
 
-func basin(grid [][]int, r int, c int, visited map[string]int, bSize int) int {
+func findBasinSize(grid [][]int, r int, c int, visited map[string]int, bSize int) int {
 	if grid[r][c-1] < 9 {
 		key := strconv.Itoa(r) + "_" + strconv.Itoa(c-1)
 		if _, ok := visited[key]; !ok {
 			visited[key] = 1
 			bSize += 1
-			bSize = basin(grid, r, c-1, visited, bSize)
+			bSize = findBasinSize(grid, r, c-1, visited, bSize)
 		}
 	}
 	if grid[r][c+1] < 9 {
@@ -28,7 +28,7 @@ func basin(grid [][]int, r int, c int, visited map[string]int, bSize int) int {
 		if _, ok := visited[key]; !ok {
 			visited[key] = 1
 			bSize += 1
-			bSize = basin(grid, r, c+1, visited, bSize)
+			bSize = findBasinSize(grid, r, c+1, visited, bSize)
 		}
 	}
 	if grid[r-1][c] < 9 {
@@ -36,7 +36,7 @@ func basin(grid [][]int, r int, c int, visited map[string]int, bSize int) int {
 		if _, ok := visited[key]; !ok {
 			visited[key] = 1
 			bSize += 1
-			bSize = basin(grid, r-1, c, visited, bSize)
+			bSize = findBasinSize(grid, r-1, c, visited, bSize)
 		}
 	}
 	if grid[r+1][c] < 9 {
@@ -44,7 +44,7 @@ func basin(grid [][]int, r int, c int, visited map[string]int, bSize int) int {
 		if _, ok := visited[key]; !ok {
 			visited[key] = 1
 			bSize += 1
-			bSize = basin(grid, r+1, c, visited, bSize)
+			bSize = findBasinSize(grid, r+1, c, visited, bSize)
 		}
 	}
 
@@ -108,7 +108,7 @@ func main() {
 
 		key := strconv.Itoa(p.r) + "_" + strconv.Itoa(p.c)
 		visited[key] = 1
-		bSize := basin(grid, p.r, p.c, visited, 1)
+		bSize := findBasinSize(grid, p.r, p.c, visited, 1)
 
 		basins = append(basins, bSize)
 	}
