@@ -100,8 +100,8 @@ func main() {
 		}
 	}
 
-	visited := make(map[string]int)
 	var basins []int
+	visited := make(map[string]int)
 
 	for _, p := range lowPoints {
 		part1 += p.h + 1
@@ -113,19 +113,8 @@ func main() {
 		basins = append(basins, bSize)
 	}
 
-	var max3 []int
-	for i := 0; i < 3; i++ {
-		max3 = append(max3, basins[i])
-	}
-	sort.Ints(max3)
-
-	for i := 3; i < len(basins); i++ {
-		if max3[0] < basins[i] {
-			max3[0] = basins[i]
-			sort.Ints(max3)
-		}
-	}
-	part2 = max3[0] * max3[1] * max3[2]
+	sort.Ints(basins)
+	part2 = basins[len(basins)-1] * basins[len(basins)-2] * basins[len(basins)-3]
 
 	fmt.Printf("Part 1: %d\n", part1)
 	fmt.Printf("Part 2: %d\n", part2)
