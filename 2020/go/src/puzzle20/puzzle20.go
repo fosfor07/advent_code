@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
-	"matrix"
-	"readers"
 	"strconv"
 	"strings"
-	"utils"
+
+	"github.com/fosfor07/advent_code/pkg/matrix"
+	"github.com/fosfor07/advent_code/pkg/readers"
+	"github.com/fosfor07/advent_code/pkg/utils"
 )
 
 const tileSize int = 10

@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"strconv"
 	"strings"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
 )
 
 func extend(intCodes []int, newLen int) []int {

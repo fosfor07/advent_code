@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"strconv"
 	"strings"
-	"utils"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
+	"github.com/fosfor07/advent_code/pkg/utils"
 )
 
 func checkHistory(history [][]int, deck []int) bool {

@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"strings"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
 )
 
 type cubeType struct {

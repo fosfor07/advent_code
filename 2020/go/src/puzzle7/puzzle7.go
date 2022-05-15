@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
 )
 
 func bagColors(bag string, bags map[string]string, seen map[string]bool) int {

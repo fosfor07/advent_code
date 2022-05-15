@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"strings"
-	"utils"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
+	"github.com/fosfor07/advent_code/pkg/utils"
 )
 
 const pLen int = 25

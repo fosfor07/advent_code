@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
-	"readers"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
 )
 
 func main() {

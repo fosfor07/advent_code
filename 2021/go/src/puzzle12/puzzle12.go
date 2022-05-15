@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"strings"
 	"unicode"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
 )
 
 func IsLower(s string) bool {

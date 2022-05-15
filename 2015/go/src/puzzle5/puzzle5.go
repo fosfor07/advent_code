@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"readers"
 	"regexp"
 	"strings"
+
+	"github.com/fosfor07/advent_code/pkg/readers"
 )
 
 func main() {
