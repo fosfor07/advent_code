@@ -62,9 +62,10 @@ func main() {
 				}
 
 				if posX >= minX && posX <= maxX && posY >= minY && posY <= maxY {
-					part2++
-					hit = true
-					break
+					if !hit {
+						part2++
+						hit = true
+					}
 				}
 
 				if posY < minY {
