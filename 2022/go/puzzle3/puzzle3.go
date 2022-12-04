@@ -29,8 +29,8 @@ func main() {
 		compartment1 := line[:len(line)/2]
 		compartment2 := line[len(line)/2:]
 
-		fnd := false
 		for _, item1 := range compartment1 {
+			fnd := false
 			for _, item2 := range compartment2 {
 				if item1 == item2 {
 					priority := int(item1)
@@ -53,15 +53,13 @@ func main() {
 	}
 
 	// part 2
-	cnt := 0
 	group := []string{}
-	for _, line := range lines {
+	for i, line := range lines {
 		group = append(group, line)
-		cnt++
 
-		fnd := false
-		if cnt == 3 {
+		if i%3 == 2 {
 			for _, item1 := range group[0] {
+				fnd := false
 				for _, item2 := range group[1] {
 					for _, item3 := range group[2] {
 						if item1 == item2 && item1 == item3 {
@@ -87,7 +85,6 @@ func main() {
 			}
 
 			group = []string{}
-			cnt = 0
 		}
 	}
 
