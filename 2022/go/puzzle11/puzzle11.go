@@ -12,17 +12,17 @@ import (
 )
 
 type monkeyType struct {
-	items               []int
-	op                  string
-	opValue, testValue  int
-	trueDest, falseDest int
-	inspections         int
+	items              []int
+	op                 string
+	opValue, testValue int
+	trueDst, falseDst  int
+	inspections        int
 }
 
 func monkeyBusiness(monkeys []monkeyType, roundLimit int, part int) {
-	manageLvl := 1
+	levelLimit := 1
 	for _, m := range monkeys {
-		manageLvl = manageLvl * m.testValue
+		levelLimit = levelLimit * m.testValue
 	}
 
 	round := 0
@@ -49,15 +49,15 @@ func monkeyBusiness(monkeys []monkeyType, roundLimit int, part int) {
 				if part == 1 {
 					wLevel = wLevel / 3
 				} else if part == 2 {
-					if wLevel >= manageLvl {
-						wLevel = wLevel % manageLvl
+					if wLevel >= levelLimit {
+						wLevel = wLevel % levelLimit
 					}
 				}
 
 				if wLevel%m.testValue == 0 {
-					monkeys[m.trueDest].items = append(monkeys[m.trueDest].items, wLevel)
+					monkeys[m.trueDst].items = append(monkeys[m.trueDst].items, wLevel)
 				} else {
-					monkeys[m.falseDest].items = append(monkeys[m.falseDest].items, wLevel)
+					monkeys[m.falseDst].items = append(monkeys[m.falseDst].items, wLevel)
 				}
 			}
 			monkeys[mId].items = nil
@@ -115,9 +115,9 @@ func main() {
 		} else if tkns[0] == "Test:" {
 			monkey.testValue, _ = strconv.Atoi(tkns[3])
 		} else if tkns[0] == "If" && tkns[1] == "true:" {
-			monkey.trueDest, _ = strconv.Atoi(tkns[5])
+			monkey.trueDst, _ = strconv.Atoi(tkns[5])
 		} else if tkns[0] == "If" && tkns[1] == "false:" {
-			monkey.falseDest, _ = strconv.Atoi(tkns[5])
+			monkey.falseDst, _ = strconv.Atoi(tkns[5])
 		}
 	}
 	monkeys1 = append(monkeys1, monkey)
