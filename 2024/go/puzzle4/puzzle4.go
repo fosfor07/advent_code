@@ -37,8 +37,8 @@ func main() {
 		}
 	}
 
-	for r := 3; r < len(grid)-3; r++ {
-		for c := 3; c < len(grid[0])-3; c++ {
+	for r := 3; r < numRows-3; r++ {
+		for c := 3; c < numCols-3; c++ {
 			if grid[r][c] == 'X' {
 				if grid[r][c+1] == 'M' && grid[r][c+2] == 'A' && grid[r][c+3] == 'S' {
 					part1++
