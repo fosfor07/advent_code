@@ -41,7 +41,7 @@ func main() {
 			correctUpdate = isUpdateCorrect(pages, rules)
 			if !correctUpdate {
 				seenRules := make(map[string]struct{})
-				pages = applyRule(pages, rules, seenRules)
+				pages = applyNextRule(pages, rules, seenRules)
 			}
 
 			middlePage, _ := strconv.Atoi(pages[len(pages)/2])
@@ -81,7 +81,7 @@ func followsRule(updatePages []string, rulePage string, updatePageIdx int) bool 
 	return true
 }
 
-func applyRule(updatePages []string, rules map[string][]string, seenRules map[string]struct{}) []string {
+func applyNextRule(updatePages []string, rules map[string][]string, seenRules map[string]struct{}) []string {
 	var elementsBefore []string
 	var elementsAfter []string
 
@@ -118,13 +118,9 @@ func applyRule(updatePages []string, rules map[string][]string, seenRules map[st
 					}
 				}
 			}
-			break
+			return applyNextRule(slices.Concat(elementsBefore, elementsAfter), rules, seenRules)
 		}
 	}
 
-	if len(elementsBefore) == 0 && len(elementsAfter) == 0 {
-		return updatePages
-	} else {
-		return applyRule(slices.Concat(elementsBefore, elementsAfter), rules, seenRules)
-	}
+	return updatePages
 }
